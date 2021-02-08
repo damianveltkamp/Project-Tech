@@ -13,12 +13,12 @@ https://github.com/damian1997/thorikosdash.git
 
 Install packages
 ```
-Npm install
+npm install
 ```
 
 To run a dev server type this into your terminal when you are inside your project folder
 ```
-npm run start
+npm run dev
 ```
 
 ## License
