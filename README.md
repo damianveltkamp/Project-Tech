@@ -8,7 +8,7 @@ Repository for the Project Tech course
 # Installing
 Clone this repository into your local project folder
 ```
-https://github.com/damian1997/thorikosdash.git
+git clone https://github.com/damian1997/Project-Tech.git
 ```
 
 Install packages
