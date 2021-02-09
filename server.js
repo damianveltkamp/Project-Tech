@@ -19,8 +19,9 @@ app
   .use(compression())
   .use(bodyParser.json())
   .use(urlEncodedParser)
-  .use('/', router)
+  .use(express.static('static'))
   .set('view engine', 'html')
+  .use('/', router)
   .listen(port, () => console.log(`Using port: ${port}`))
 
 
