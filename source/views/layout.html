@@ -2,9 +2,11 @@
 <html  lang="en">
   <head>
     <title>{{ title }}</title>
+    <link rel="stylesheet" href="/build/css/{{cssBundle}}">
   </head>
   <body>
     {% block  content %}
     {% endblock %}
+    <script async defer src="/build/js/main.min.js"></script>
   </body>
 </html>
