@@ -37,6 +37,5 @@ function getComponentPaths() {
 
 function getCssBundleName() {
   const cssBundle = fs.readdirSync('static/build/css/')
-  console.log(cssBundle)
   return cssBundle[0]
 }

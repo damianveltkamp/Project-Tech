@@ -1,0 +1,30 @@
+{% extends  layout %}
+{% block  content %}
+  <h1>{{ title }}</h1>
+  <form class="c-form" action="/register-user" method="POST">
+    <fieldset class="form__fieldset">
+      <label class="form__label">
+        Username
+        <input name="username" type="text" required>
+      </label>
+      <label>
+        Password (8 characters minimum)
+        <input name="password" type="password" required>
+      </label>
+      <label>
+        Repeat password
+
+        {% if errors.repeatPassword %}
+          <span class="form__error">
+            {{ errors.repeatPassword }}
+          </span>
+        {% endif %}
+
+        <input name="repeatPassword" type="password" required>
+      </label>
+    </fieldset>
+    <fieldset>
+      <input type="submit">
+    </fieldset>
+  </form>
+{% endblock %}
