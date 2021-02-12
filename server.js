@@ -7,7 +7,6 @@ import bodyParser from 'body-parser'
 import router from './routes/index.routes'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import foo from './controllers/database/users.controller'
 
 dotenv.config()
 

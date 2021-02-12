@@ -1,8 +1,21 @@
 import mongoose from 'mongoose'
-import * as model from '../../models/user.model'
+import userModel from '../../models/user.model'
 
 export default {
   getAll: () => {
-    return model.default.find({}).lean()
+    return userModel.find({}).lean()
+  },
+  createNewUser: (username, password) => {
+    const user = new userModel({
+      username: username,
+      password: password
+    })
+
+    user.save(error => {
+      error ? console.log(`Something went wrong: ${error}`) : console.log(`New user created: ${user}`)
+    })
+  },
+  updatePassword: () => {
+
   }
 }
