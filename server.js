@@ -47,9 +47,3 @@ function getCssBundleName() {
   const cssBundle = fs.readdirSync('static/build/css/')
   return cssBundle[0]
 }
-
-
-Promise.resolve(foo.getAll())
-  .then(value => {
-    console.log(value)
-  })
