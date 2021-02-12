@@ -5,10 +5,18 @@ import fs from 'fs'
 import path from 'path'
 import bodyParser from 'body-parser'
 import router from './routes/index.routes'
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+import foo from './controllers/database/users.controller'
+
+dotenv.config()
 
 const port = process.env.PORT || 3000,
   app = express(),
-  urlEncodedParser = bodyParser.urlencoded({ extended: true })
+  urlEncodedParser = bodyParser.urlencoded({ extended: true }),
+  dbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
+
+mongoose.connect(dbUrl, { useUnifiedTopology: true })
 
 nunjucks.configure(['source/views', ...getComponentPaths()], {
   autoescape: true,
@@ -39,3 +47,9 @@ function getCssBundleName() {
   const cssBundle = fs.readdirSync('static/build/css/')
   return cssBundle[0]
 }
+
+
+Promise.resolve(foo.getAll())
+  .then(value => {
+    console.log(value)
+  })
