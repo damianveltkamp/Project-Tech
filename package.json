@@ -20,13 +20,16 @@
   },
   "homepage": "https://github.com/damian1997/Project-Tech#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
+    "googleapis": "^67.1.0",
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.15",
+    "nodemailer": "^6.4.18",
     "nunjucks": "^3.2.2"
   },
   "devDependencies": {

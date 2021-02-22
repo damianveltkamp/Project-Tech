@@ -1,4 +1,6 @@
 import user from './database/users.controller'
+import bcrypt from 'bcrypt'
+import crypto from 'crypto'
 
 exports.register = (req, res) => {
   const data = {
@@ -12,11 +14,18 @@ exports.register = (req, res) => {
 
 exports.registerUser = (req, res, next) => {
   req.errors = validateUserInformation(req.body)
+  const hashedPass = hashPassword(req.body.password)
 
-  !Object.keys(req.errors).length && user.createNewUser(req.body.username, req.body.password)
-  return next()
+  Promise.resolve(hashedPass)
+    .then(resolvedHashedPass => {
+      !Object.keys(req.errors).length && createNewUser(req.body.email, resolvedHashedPass, createEmailToken())
+      return next()
+    })
 }
 
+function createNewUser(email, password, emailToken) {
+  user.createNewUser(email, password, emailToken)
+}
 
 function validateUserInformation(userInformation) {
   const errors = {}
@@ -27,4 +36,20 @@ function validateUserInformation(userInformation) {
 
 
   return errors
+}
+
+function createEmailToken() {
+  return crypto.randomBytes(128).toString('hex');
+}
+
+function hashPassword(password) {
+  const saltRounds = 10;
+  const hashedPass = bcrypt.hash(password, saltRounds)
+  return hashedPass
+}
+
+function compareHash(password, hashedPassword) {
+  bcrypt.compare(password, hashedPassword, function(err, result) {
+    console.log('same passwords')
+  });
 }
