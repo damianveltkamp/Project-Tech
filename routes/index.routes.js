@@ -6,6 +6,7 @@ import * as account from '../controllers/account.controller'
 const router = express.Router()
 
 router.get('/', base.home)
+router.get('/verify-account', account.verify)
 router.get('/register', account.register)
 router.post('/register', account.registerUser, (req, res) => {
   if(Object.keys(req.errors).length && req.errors.constructor === Object) {

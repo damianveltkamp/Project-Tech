@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import userModel from '../../models/user.model'
 import nodemailer from 'nodemailer'
-import { google } from 'googleapis'
+import {google} from 'googleapis'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -9,6 +9,7 @@ dotenv.config()
 export default {
   getAll: () => {
     return userModel.find({}).lean()
+      .then(users => users)
   },
   createNewUser: (email, password, emailToken) => {
     const user = new userModel({
@@ -23,6 +24,10 @@ export default {
   },
   updatePassword: () => {
 
+  },
+  verify: (emailToken) => {
+    return userModel.findOneAndUpdate({ emailToken: emailToken }, { $set: { isVerified: true } }).lean()
+      .then(user => user)
   }
 }
 
@@ -49,17 +54,13 @@ async function verificationEmail(email, emailToken) {
 
   const mailOptions = {
     from: process.env.EMAIL,
-    to: 'projecttechhva@gmail.com',
+    to: email,
     subject: 'Verify account',
-    text: 'Its working node mailer'
+    html: `<a href="http://localhost:3001/verify-account?token=${emailToken}">Click this link to verify your email</a>`
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error.message);
-    } else {
-      console.log('send with succes')
-    }
+    error ? console.log(error.message) : console.log('email send with succes')
   });
 }
 

@@ -5,6 +5,13 @@
     <fieldset class="form__fieldset">
       <label class="form__label">
         Email
+
+        {% if errors.email %}
+          <span class="form__error">
+            {{ errors.email }}
+          </span>
+        {% endif %}
+
         <input name="email" type="text" required>
       </label>
       <label>
