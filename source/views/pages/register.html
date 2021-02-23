@@ -2,6 +2,11 @@
 {% block  content %}
   <h1>{{ title }}</h1>
   <form class="c-form" action="/register" method="POST">
+    {% if errors.default %}
+      <span class="form__error">
+        {{ errors.default }}
+      </span>
+    {% endif %}
     <fieldset class="form__fieldset">
       <label class="form__label">
         Email
@@ -11,7 +16,6 @@
             {{ errors.email }}
           </span>
         {% endif %}
-
         <input name="email" type="text" required>
       </label>
       <label>
@@ -20,15 +24,21 @@
       </label>
       <label>
         Repeat password
-
         {% if errors.repeatPassword %}
           <span class="form__error">
             {{ errors.repeatPassword }}
           </span>
         {% endif %}
-
         <input name="repeatPassword" type="password" required>
       </label>
+    </fieldset>
+    <fieldset>
+      {% if errors.captcha %}
+        <span class="form__error">
+          {{ errors.captcha }}
+        </span>
+      {% endif %}
+      <div class="g-recaptcha" data-sitekey="{{ captchaSiteKey }}"></div>
     </fieldset>
     <fieldset>
       <input type="submit">
