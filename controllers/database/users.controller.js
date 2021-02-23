@@ -12,12 +12,12 @@ export default {
       .then(users => users)
   },
   createNewUser: async (email, password, emailToken) => {
-    const userAlreadyExists = await userModel.findOne({ email: email }).lean()
+    const error = {}
+    const userAlreadyExists = await userModel.findOne({email: email}).lean()
       .then(user => user)
 
-    if(userAlreadyExists){
-      console.log(userAlreadyExists)
-      return { message: `There is already an account created for ${userAlreadyExists.email}` }
+    if (userAlreadyExists) {
+      error.message = `There is already an account created for ${userAlreadyExists.email}`
     }
 
     const newUser = new userModel({
@@ -29,13 +29,15 @@ export default {
     newUser.save(error => {
       error ? console.log(`Something went wrong: ${error}`) : verificationEmail(email, emailToken)
     })
+
+    return error
   },
   updatePassword: () => {
 
   },
 
   verify: (emailToken) => {
-    return userModel.findOneAndUpdate({ emailToken: emailToken }, { $set: { isVerified: true, emailToken: '' } }).lean()
+    return userModel.findOneAndUpdate({emailToken: emailToken}, {$set: {isVerified: true, emailToken: ''}}).lean()
       .then(user => user)
   }
 }

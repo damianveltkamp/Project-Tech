@@ -19,16 +19,16 @@
         <input name="email" type="text" required>
       </label>
       <label>
-        Password (8 characters minimum)
-        <input name="password" type="password" required>
-      </label>
-      <label>
-        Repeat password
+        Password (No special characters, 8 characters minimum, atleast 1 digit and 1 uppercase letter)
         {% if errors.repeatPassword %}
           <span class="form__error">
             {{ errors.repeatPassword }}
           </span>
         {% endif %}
+        <input name="password" type="password" required>
+      </label>
+      <label>
+        Repeat password
         <input name="repeatPassword" type="password" required>
       </label>
     </fieldset>

@@ -91,7 +91,17 @@ function validateEmail(email) {
 }
 
 function validatePassword(password, repeatPassword) {
-  return password !== repeatPassword ? { succes: false, message: 'Passwords are not the same' } : { succes: true }
+  const regex = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
+
+  if(password !== repeatPassword) {
+    return { succes: false, message: 'Passwords are not the same' }
+  }
+
+  if(regex.test(password) !== true) {
+    return { succes: false, message: 'Password is not compliant with the required password patern' }
+  }
+
+  return { succes: true }
 }
 
 function createEmailToken() {
