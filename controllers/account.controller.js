@@ -17,7 +17,6 @@ export function register(req, res) {
   res.render('pages/register.html', data)
 }
 
-//TODO html dynamisch maken
 export async function registerUser(req, res, next) {
   req.errors = await validateRegisterForm(req.body, req.connection.remoteAddress)
 
@@ -35,12 +34,10 @@ export async function registerUser(req, res, next) {
   }
 }
 
-export function verify(req, res) {
-  //TODO rewrite asyn await
-  Promise.resolve(user.verify(req.query.token))
-    .then(value => {
-      console.log(value)
-    })
+export async function verify(req, res) {
+  //TODO figure out what i wanted to do here again
+  const value = await user.verify(req.query.token)
+  console.log(value)
 
   const data = {
     layout: 'layout.html',
