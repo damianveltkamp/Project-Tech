@@ -6,25 +6,26 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-exports.register = (req, res) => {
+export function register(req, res) {
   const data = {
-    layout:  'layout.html',
+    layout: 'layout.html',
     title: 'Register page',
     errors: req.errors,
-    captchaSiteKey : process.env.CAPTCHA_SITE_KEY
+    captchaSiteKey: process.env.CAPTCHA_SITE_KEY
   }
 
   res.render('pages/register.html', data)
 }
 
-exports.registerUser = async (req, res, next) => {
+//TODO html dynamisch maken
+export async function registerUser(req, res, next) {
   req.errors = await validateForm(req.body, req.connection.remoteAddress)
 
-  if(!Object.keys(req.errors).length) {
+  if (!Object.keys(req.errors).length) {
     const hashedPass = await hashPassword(req.body.password)
     const userCreationErrors = await user.createNewUser(req.body.email, hashedPass, createEmailToken())
 
-    if(userCreationErrors.message) {
+    if (userCreationErrors.message) {
       req.errors.default = userCreationErrors.message
     }
 
@@ -34,19 +35,27 @@ exports.registerUser = async (req, res, next) => {
   }
 }
 
-exports.verify = (req, res) => {
+export function verify(req, res) {
   Promise.resolve(user.verify(req.query.token))
     .then(value => {
       console.log(value)
     })
 
   const data = {
-    layout:  'layout.html',
+    layout: 'layout.html',
     title: 'Verify page'
   }
 
   res.render('pages/verify.html', data)
 }
+
+export function login(req, res) {
+  console.log('heey')
+  res.send('oi')
+}
+
+
+/* Helpers */
 
 function createNewUser(email, password, emailToken) {
   return user.createNewUser(email, password, emailToken)
@@ -58,15 +67,15 @@ async function validateForm({email, password, repeatPassword, ['g-recaptcha-resp
   const validPassword = validatePassword(password, repeatPassword)
   const validCaptcha = await validateCaptcha(userCaptchaToken, remoteAddress)
 
-  if(validPassword.succes === false) {
+  if (validPassword.succes === false) {
     errors.repeatPassword = validPassword.message
   }
 
-  if(validEmail.succes === false) {
+  if (validEmail.succes === false) {
     errors.email = validEmail.message
   }
 
-  if(validCaptcha.succes === false) {
+  if (validCaptcha.succes === false) {
     errors.captcha = validCaptcha.message
   }
 
@@ -74,34 +83,34 @@ async function validateForm({email, password, repeatPassword, ['g-recaptcha-resp
 }
 
 async function validateCaptcha(userCaptchaToken, remoteAddress) {
-  if(!userCaptchaToken) {
-    return { succes: false, message: 'Please fill in the captcha' }
+  if (!userCaptchaToken) {
+    return {succes: false, message: 'Please fill in the captcha'}
   }
 
   const verifyUrl = `https://google.com/recaptcha/api/siteverify?secret=${process.env.CAPTCHA_SECRET}&response${userCaptchaToken}&remoteip=${remoteAddress}`
 
   const response = await fetch(verifyUrl)
 
-  return response.status === 200 ? { succes: true } : { succes: false, message: 'Captcha verification went wrong, please try again' }
+  return response.status === 200 ? {succes: true} : {succes: false, message: 'Captcha verification went wrong, please try again'}
 }
 
 function validateEmail(email) {
   const regex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-  return regex.test(email) === true ? { succes: true } : { succes: false, message: 'Provided email is not a valid email adress' }
+  return regex.test(email) === true ? {succes: true} : {succes: false, message: 'Provided email is not a valid email adress'}
 }
 
 function validatePassword(password, repeatPassword) {
   const regex = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
 
-  if(password !== repeatPassword) {
-    return { succes: false, message: 'Passwords are not the same' }
+  if (password !== repeatPassword) {
+    return {succes: false, message: 'Passwords are not the same'}
   }
 
-  if(regex.test(password) !== true) {
-    return { succes: false, message: 'Password is not compliant with the required password patern' }
+  if (regex.test(password) !== true) {
+    return {succes: false, message: 'Password is not compliant with the required password patern'}
   }
 
-  return { succes: true }
+  return {succes: true}
 }
 
 function createEmailToken() {
@@ -115,7 +124,7 @@ function hashPassword(password) {
 }
 
 function compareHash(password, hashedPassword) {
-  bcrypt.compare(password, hashedPassword, function(err, result) {
+  bcrypt.compare(password, hashedPassword, function (err, result) {
     console.log('same passwords')
   });
 }

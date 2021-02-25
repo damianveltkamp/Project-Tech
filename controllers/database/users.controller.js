@@ -63,6 +63,7 @@ async function verificationEmail(email, emailToken) {
     }
   });
 
+  //TODO html dynamisch maken
   const mailOptions = {
     from: process.env.EMAIL,
     to: email,

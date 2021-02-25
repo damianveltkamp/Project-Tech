@@ -1,4 +1,4 @@
-exports.home = (req, res) => {
+export function home(req, res) {
   const data = {
     layout:  'layout.html',
     title: 'Home page'
@@ -7,7 +7,7 @@ exports.home = (req, res) => {
   res.render('pages/home.html', data)
 }
 
-exports.notFound = (req, res) => {
+export function notFound(req, res) {
   const data = {
     layout:  'layout.html',
     title: 'Page not found'

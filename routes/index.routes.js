@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import base from '../controllers/default.controller'
+import * as base from '../controllers/default.controller'
 import * as account from '../controllers/account.controller'
 
 const router = express.Router()
@@ -15,6 +15,7 @@ router.post('/register', account.registerUser, (req, res) => {
     return res.redirect('/')
   }
 })
+router.get('/login', account.login)
 router.get('*', base.notFound)
 
 export default router
