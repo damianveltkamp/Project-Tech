@@ -11,6 +11,12 @@ export default {
     return userModel.find({}).lean()
       .then(users => users)
   },
+  getHashedPassword: (email) => {
+    return userModel.findOne({ email: email}).lean()
+      .then(user => {
+        return user.password
+      })
+  },
   createNewUser: async (email, password, emailToken) => {
     const error = {}
     const userAlreadyExists = await userModel.findOne({email: email}).lean()

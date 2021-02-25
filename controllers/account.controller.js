@@ -19,7 +19,7 @@ export function register(req, res) {
 
 //TODO html dynamisch maken
 export async function registerUser(req, res, next) {
-  req.errors = await validateForm(req.body, req.connection.remoteAddress)
+  req.errors = await validateRegisterForm(req.body, req.connection.remoteAddress)
 
   if (!Object.keys(req.errors).length) {
     const hashedPass = await hashPassword(req.body.password)
@@ -36,6 +36,7 @@ export async function registerUser(req, res, next) {
 }
 
 export function verify(req, res) {
+  //TODO rewrite asyn await
   Promise.resolve(user.verify(req.query.token))
     .then(value => {
       console.log(value)
@@ -50,18 +51,49 @@ export function verify(req, res) {
 }
 
 export function login(req, res) {
-  console.log('heey')
-  res.send('oi')
+  const data = {
+    layout: 'layout.html',
+    title: 'Login page',
+    errors: req.errors,
+    captchaSiteKey: process.env.CAPTCHA_SITE_KEY
+  }
+
+  res.render('pages/login.html', data)
+}
+
+export async function loginUser(req, res, next) {
+  req.errors = await validateLoginForm(req.body, req.connection.remoteAddress)
+
+  if(!Object.keys(req.errors).length) {
+    console.log(req.body.email)
+    req.loggedInUser = req.body.email
+  }
+
+  return next()
 }
 
 
 /* Helpers */
+async function validateLoginForm({email, password, ['g-recaptcha-response']: userCaptchaToken}, remoteAddress) {
+  const errors = {}
+  const validCaptcha = await validateCaptcha(userCaptchaToken, remoteAddress)
+  const hashedPassword = await user.getHashedPassword(email)
+  const validPassword = await compareHash(password, hashedPassword)
 
-function createNewUser(email, password, emailToken) {
-  return user.createNewUser(email, password, emailToken)
+  console.log(validPassword)
+
+  if(validPassword === false) {
+    errors.default = 'Login failed, username or password does not match'
+  }
+
+  if (validCaptcha.succes === false) {
+    errors.captcha = validCaptcha.message
+  }
+
+  return errors
 }
 
-async function validateForm({email, password, repeatPassword, ['g-recaptcha-response']: userCaptchaToken}, remoteAddress) {
+async function validateRegisterForm({email, password, repeatPassword, ['g-recaptcha-response']: userCaptchaToken}, remoteAddress) {
   const errors = {}
   const validEmail = validateEmail(email)
   const validPassword = validatePassword(password, repeatPassword)
@@ -114,17 +146,15 @@ function validatePassword(password, repeatPassword) {
 }
 
 function createEmailToken() {
-  return crypto.randomBytes(128).toString('hex');
+  return crypto.randomBytes(128).toString('hex')
 }
 
 function hashPassword(password) {
-  const saltRounds = 10;
+  const saltRounds = 10
   const hashedPass = bcrypt.hash(password, saltRounds)
   return hashedPass
 }
 
 function compareHash(password, hashedPassword) {
-  bcrypt.compare(password, hashedPassword, function (err, result) {
-    console.log('same passwords')
-  });
+  return bcrypt.compare(password, hashedPassword)
 }
