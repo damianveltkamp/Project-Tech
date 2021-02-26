@@ -13,8 +13,8 @@ import connectRedis from 'connect-redis'
 dotenv.config()
 
 const port = process.env.PORT || 3000,
-  redisPort = process.env.PORT || 6379,
-  redisClient = redis.createClient(redisPort),
+  redisPort = process.env.REDIS_PORT || 6379,
+  redisClient = redis.createClient(`redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${redisPort}`),
   redisStore = connectRedis(session),
   app = express(),
   urlEncodedParser = bodyParser.urlencoded({ extended: true }),
@@ -36,7 +36,7 @@ app
     name: '_redisTesting',
     resave: false,
     saveUninitialized: true,
-    store: new redisStore({ host: 'localhost', port: redisPort, client: redisClient, ttl: 86400 }),
+    store: new redisStore({ client: redisClient, ttl: 86400 }),
   }))
   .use(express.static('static'))
   .set('view engine', 'html')
