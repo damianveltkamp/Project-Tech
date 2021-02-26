@@ -1,5 +1,7 @@
 import fetch from 'node-fetch'
-import user from './database/users.controller'
+import redis from 'redis'
+import userController from './database/users.controller'
+import userSettingsController from './database/users.settings.controller'
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import dotenv from 'dotenv'
@@ -22,7 +24,7 @@ export async function registerUser(req, res, next) {
 
   if (!Object.keys(req.errors).length) {
     const hashedPass = await hashPassword(req.body.password)
-    const userCreationErrors = await user.createNewUser(req.body.email, hashedPass, createEmailToken())
+    const userCreationErrors = await userController.createNewUser(req.body.email, hashedPass, createEmailToken())
 
     if (userCreationErrors.message) {
       req.errors.default = userCreationErrors.message
@@ -35,9 +37,8 @@ export async function registerUser(req, res, next) {
 }
 
 export async function verify(req, res) {
-  //TODO figure out what i wanted to do here again
-  const value = await user.verify(req.query.token)
-  console.log(value)
+  //TODO Fix thanks for verifying your account page
+  const value = await userController.verify(req.query.token)
 
   const data = {
     layout: 'layout.html',
@@ -59,35 +60,81 @@ export function login(req, res) {
 }
 
 export async function loginUser(req, res, next) {
-  req.errors = await validateLoginForm(req.body, req.connection.remoteAddress)
+  const user = await userController.getUser(req.body.email)
 
-  if(!Object.keys(req.errors).length) {
-    console.log(req.body.email)
-    req.loggedInUser = req.body.email
+  req.errors = await validateLoginForm(user, req.body, req.connection.remoteAddress)
+
+  if (!Object.keys(req.errors).length) {
+    req.loggedInUser = user._id
   }
 
   return next()
 }
 
+export async function onboardingFlow(req, res) {
+  const data = {
+    layout: 'layout.html',
+    title: 'Onboarding page',
+  }
+
+  req.session.userID
+
+  if(req.session.userID) {
+    const loggedInUser = await userController.getUserByID(req.session.userID)
+    return loggedInUser.hasSetupAccount === true ? res.redirect('/') : res.render('pages/onboarding.html', data)
+  }
+
+  return res.redirect('/login')
+}
+
+export async function postOnboardingFlow(req, res, next) {
+  const loggedInUser = await userController.getUserByID(req.session.userID)
+  userSettingsController.createNewUserProfile(loggedInUser._id, req.body)
+  next()
+}
+
+export function userSettings(req, res) {
+  const data = {}
+  res.render('user-settings.html', data)
+}
+
+export function updateUserSettings(req, res, next) {
+  next()
+}
+
+export function resendVerificationEmail(req, res) {
+  userController.resendVerificationEmail(req.body.email, createEmailToken())
+  res.redirect('/login')
+}
+
 
 /* Helpers */
-async function validateLoginForm({email, password, ['g-recaptcha-response']: userCaptchaToken}, remoteAddress) {
+async function validateLoginForm(user, {password, ['g-recaptcha-response']: userCaptchaToken}, remoteAddress) {
   const errors = {}
+  const isVerifiedUser = await validateUserVerification(user)
   const validCaptcha = await validateCaptcha(userCaptchaToken, remoteAddress)
-  const hashedPassword = await user.getHashedPassword(email)
-  const validPassword = await compareHash(password, hashedPassword)
+  const validPassword = await compareHash(password, user.password)
 
-  console.log(validPassword)
-
-  if(validPassword === false) {
-    errors.default = 'Login failed, username or password does not match'
+  if (validPassword.succes === false) {
+    errors.default = validPassword.message
   }
 
   if (validCaptcha.succes === false) {
     errors.captcha = validCaptcha.message
   }
 
+  if (isVerifiedUser.succes === false && validPassword.succes === true) {
+    errors.isVerified = {
+      message: isVerifiedUser.message,
+      email: isVerifiedUser.email
+    }
+  }
+
   return errors
+}
+
+async function validateUserVerification({isVerified, email}) {
+  return isVerified === false ? {succes: false, message: `The account for ${email} has not been verified, do you want us to send a new verification email?`, email: email} : {succes: true}
 }
 
 async function validateRegisterForm({email, password, repeatPassword, ['g-recaptcha-response']: userCaptchaToken}, remoteAddress) {
@@ -152,6 +199,7 @@ function hashPassword(password) {
   return hashedPass
 }
 
-function compareHash(password, hashedPassword) {
-  return bcrypt.compare(password, hashedPassword)
+async function compareHash(password, hashedPassword) {
+  const passwordsMatch = await bcrypt.compare(password, hashedPassword)
+  return passwordsMatch === false ? {succes: false, message: 'Login failed, username or password does not match'} : {succes: true}
 }

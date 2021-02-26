@@ -11,10 +11,16 @@ export default {
     return userModel.find({}).lean()
       .then(users => users)
   },
-  getHashedPassword: (email) => {
-    return userModel.findOne({ email: email}).lean()
+  getUser: (email) => {
+    return userModel.findOne({email: email}).lean()
       .then(user => {
-        return user.password
+        return user
+      })
+  },
+  getUserByID: (id) => {
+    return userModel.findOne({_id: id}).lean()
+      .then(user => {
+        return user
       })
   },
   createNewUser: async (email, password, emailToken) => {
@@ -38,10 +44,12 @@ export default {
 
     return error
   },
-  updatePassword: () => {
-
+  resendVerificationEmail: (email, emailToken) => {
+    userModel.findOneAndUpdate({email: email}, {emailToken: emailToken})
+      .then(data => {
+        verificationEmail(email, emailToken)
+      })
   },
-
   verify: (emailToken) => {
     return userModel.findOneAndUpdate({emailToken: emailToken}, {$set: {isVerified: true, emailToken: ''}}).lean()
       .then(user => user)

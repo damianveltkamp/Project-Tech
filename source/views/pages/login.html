@@ -1,6 +1,15 @@
 {% extends  layout %}
 {% block  content %}
   <h1>{{ title }}</h1>
+  {% if errors.isVerified %}
+    <span class="form__error">
+      {{ errors.isVerified.message }}
+      <form action="/resendVerificationEmail" method="POST">
+        <input name="email" type="hidden" value="{{ errors.isVerified.email }}">
+        <input type="submit" value="Resend verification email">
+      </form>
+    </span>
+  {% endif %}
   <form class="c-form" action="/login" method="POST">
     {% if errors.default %}
       <span class="form__error">

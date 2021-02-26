@@ -8,17 +8,19 @@ import router from './routes/index.routes'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import redis from 'redis'
+import connectRedis from 'connect-redis'
 
 dotenv.config()
 
 const port = process.env.PORT || 3000,
   redisPort = process.env.PORT || 6379,
   redisClient = redis.createClient(redisPort),
+  redisStore = connectRedis(session),
   app = express(),
   urlEncodedParser = bodyParser.urlencoded({ extended: true }),
   dbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
 
-mongoose.connect(dbUrl, { useUnifiedTopology: true })
+mongoose.connect(dbUrl, { useUnifiedTopology: true, useFindAndModify: false })
 
 nunjucks.configure(['source/views', ...getComponentPaths()], {
   autoescape: true,
@@ -31,8 +33,10 @@ app
   .use(urlEncodedParser)
   .use(session({
     secret: process.env.SESSION_SECRET,
+    name: '_redisTesting',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: new redisStore({ host: 'localhost', port: redisPort, client: redisClient, ttl: 86400 }),
   }))
   .use(express.static('static'))
   .set('view engine', 'html')

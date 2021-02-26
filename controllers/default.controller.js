@@ -1,13 +1,12 @@
 export async function home(req, res) {
-  req.app.settings.redisClient.get('loggedInUser', (error, user) => {
-    const data = {
-      layout:  'layout.html',
-      title: 'Home page',
-      loggedInUser: user
-    }
+  req.session.userID
+  const data = {
+    layout:  'layout.html',
+    title: 'Home page',
+    loggedInUser: req.session.userID
+  }
 
-    res.render('pages/home.html', data)
-  })
+  res.render('pages/home.html', data)
 }
 
 export function notFound(req, res) {

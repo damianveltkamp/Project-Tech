@@ -1,0 +1,24 @@
+{% extends  layout %}
+{% block  content %}
+  <h1>{{ title }}</h1>
+  <p>Before we continue we would like to get to know you better, fill in some extra information so we can provide you with a better experience</p>
+
+  <form class="c-form" action="/onboarding" method="POST">
+    <fieldset>
+      <label class="form__label">
+        Name
+
+        {% if errors.name %}
+          <span class="form__error">
+            {{ errors.name }}
+          </span>
+        {% endif %}
+        <input name="name" type="text" required>
+      </label>
+      <input type="hidden" value="">
+    </fieldset>
+    <fieldset>
+      <input type="submit">
+    </fieldset>
+  </form>
+{% endblock %}

@@ -22,6 +22,10 @@ const cluster_schema = new schema({
   isVerified: {
     type: Boolean,
     default: false
+  },
+  hasSetupAccount: {
+    type: Boolean,
+    default: false
   }
 })
 
