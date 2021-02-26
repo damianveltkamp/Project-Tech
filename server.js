@@ -31,7 +31,6 @@ app
   .use(compression())
   .use(bodyParser.json())
   .use(urlEncodedParser)
-  .use(cookieParser())
   .use(session({
     secret: process.env.SESSION_SECRET,
     name: '_redisTesting',
