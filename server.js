@@ -1,14 +1,25 @@
 import express from 'express'
+import session from 'express-session'
 import nunjucks from 'nunjucks'
 import compression from 'compression'
 import fs from 'fs'
-import path from 'path'
-import bodyParser from 'body-parser'
 import router from './routes/index.routes'
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+import redis from 'redis'
+import connectRedis from 'connect-redis'
+
+dotenv.config()
 
 const port = process.env.PORT || 3000,
+  redisPort = process.env.REDIS_PORT || 6379,
+  redisClient = redis.createClient(`redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${redisPort}`),
+  redisStore = connectRedis(session),
   app = express(),
-  urlEncodedParser = bodyParser.urlencoded({ extended: true })
+  urlEncodedParser = express.urlencoded({ extended: true }),
+  dbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
+
+mongoose.connect(dbUrl, { useUnifiedTopology: true, useFindAndModify: false })
 
 nunjucks.configure(['source/views', ...getComponentPaths()], {
   autoescape: true,
@@ -17,10 +28,18 @@ nunjucks.configure(['source/views', ...getComponentPaths()], {
 
 app
   .use(compression())
-  .use(bodyParser.json())
+  .use(express.json())
   .use(urlEncodedParser)
+  .use(session({
+    secret: process.env.SESSION_SECRET,
+    name: process.env.SESSION_NAME,
+    resave: false,
+    saveUninitialized: true,
+    store: new redisStore({ client: redisClient, ttl: 86400 }),
+  }))
   .use(express.static('static'))
   .set('view engine', 'html')
+  .set('redisClient', redisClient)
   .use('/', router)
   .listen(port, () => console.log(`Using port: ${port}`))
 
@@ -37,6 +56,5 @@ function getComponentPaths() {
 
 function getCssBundleName() {
   const cssBundle = fs.readdirSync('static/build/css/')
-  console.log(cssBundle)
   return cssBundle[0]
 }

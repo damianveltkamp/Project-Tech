@@ -5,8 +5,14 @@
     <link rel="stylesheet" href="/build/css/{{cssBundle}}">
   </head>
   <body>
+    {% include 'header.html' %}
+
     {% block  content %}
     {% endblock %}
-    <script async defer src="/build/js/main.min.js"></script>
+
+    {% include 'footer.html' %}
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="/build/js/main.min.js" async defer></script>
   </body>
 </html>
