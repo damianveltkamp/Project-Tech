@@ -60,6 +60,9 @@ export default {
 async function verificationEmail(email, emailToken) {
   const oAuth2Client = setupAuth()
   const accessToken = await oAuth2Client.getAccessToken()
+    .catch(error => {
+      console.log(error)
+    })
 
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -93,6 +96,10 @@ async function verificationEmail(email, emailToken) {
 
 function setupAuth() {
   const oAuth2Client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.REDIRECT_URI)
+  const scopes = [
+    'https://mail.google.com/'
+  ]
+
 
   oAuth2Client.setCredentials({
     refresh_token: process.env.REFRESH_TOKEN

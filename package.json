@@ -21,7 +21,6 @@
   "homepage": "https://github.com/damian1997/Project-Tech#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
-    "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-redis": "^5.1.0",
     "dotenv": "^8.2.0",

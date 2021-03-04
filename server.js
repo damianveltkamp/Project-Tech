@@ -3,7 +3,6 @@ import session from 'express-session'
 import nunjucks from 'nunjucks'
 import compression from 'compression'
 import fs from 'fs'
-import bodyParser from 'body-parser'
 import router from './routes/index.routes'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
@@ -17,7 +16,7 @@ const port = process.env.PORT || 3000,
   redisClient = redis.createClient(`redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${redisPort}`),
   redisStore = connectRedis(session),
   app = express(),
-  urlEncodedParser = bodyParser.urlencoded({ extended: true }),
+  urlEncodedParser = express.urlencoded({ extended: true }),
   dbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
 
 mongoose.connect(dbUrl, { useUnifiedTopology: true, useFindAndModify: false })
@@ -29,11 +28,11 @@ nunjucks.configure(['source/views', ...getComponentPaths()], {
 
 app
   .use(compression())
-  .use(bodyParser.json())
+  .use(express.json())
   .use(urlEncodedParser)
   .use(session({
     secret: process.env.SESSION_SECRET,
-    name: '_redisTesting',
+    name: process.env.SESSION_NAME,
     resave: false,
     saveUninitialized: true,
     store: new redisStore({ client: redisClient, ttl: 86400 }),
