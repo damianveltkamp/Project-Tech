@@ -1,0 +1,5 @@
+@import 'variants/mixin.button';
+
+.c-button {
+  @include button;
+}

@@ -1,0 +1,40 @@
+// TODO pick font and set font, set typography settings
+
+@mixin h1 {
+  color: $color-white;
+}
+
+@mixin h2 {
+  color: $color-white;
+}
+
+@mixin h3 {
+  color: $color-white;
+}
+
+
+
+h1 {
+  @include h1;
+}
+
+h2 {
+  @include h2;
+}
+
+h3 {
+  @include h3;
+}
+
+
+.u-h1 {
+  @include h1;
+}
+
+.u-h2 {
+  @include h2;
+}
+
+.u-h3 {
+  @include h3;
+}

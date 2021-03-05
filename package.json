@@ -7,7 +7,7 @@
     "dev": "run-p watch:server watch:build browser-sync",
     "watch:build": "webpack",
     "watch:server": "nodemon -r -e html,js esm ./server.js",
-    "browser-sync": "browser-sync start --proxy 'http://localhost:3000' --port '3001' --files 'source' 'static/build' --no-notify --reload-delay=500"
+    "browser-sync": "browser-sync start --proxy 'http://localhost:3000' --port '3001' --files 'static/build' --no-notify --reload-delay=500"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,54 @@
+.c-form {
+  padding: 30px 20px;
+  background: $color-white;
+  border-radius: 5px;
+}
+
+.form__fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+}
+
+.form__heading {
+  text-align: center;
+}
+
+.form__label {
+  display: block;
+  margin-bottom: 15px;
+  color: $color-primary;
+  font-size: 1.6rem;
+}
+
+.form__label-value {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form__input {
+  padding: 5px;
+  width: 100%;
+}
+
+.form__error,
+.form__error--default {
+  display: block;
+  color: $color-error;
+}
+
+.form__error {
+  margin-bottom: 5px;
+}
+
+.form__error--default {
+  margin-bottom: 15px;
+}
+
+.form__fieldset-legend {
+  display: none;
+}

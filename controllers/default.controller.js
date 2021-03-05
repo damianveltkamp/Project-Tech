@@ -17,3 +17,11 @@ export function notFound(req, res) {
 
   res.render('pages/not-found.html', data)
 }
+
+export function like(req, res) {
+  res.send('hallo')
+}
+
+export function likepost(req, res) {
+  res.send('nog een keer hallo')
+}
