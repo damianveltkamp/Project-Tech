@@ -1,7 +1,7 @@
-async function moduleInit(moduleName, callBack) {
+async function moduleInit(moduleName, callBack, functionName) {
   const element = document.querySelector(moduleName)
   element && callBack().then(value => {
-    value.default()
+    functionName ? value[functionName]() : value.default()
   })
 }
 

@@ -1,5 +1,9 @@
-function initLoginHandler() {
+export function initLoginHandler() {
   document.querySelector('[js-hook-module-login]').addEventListener('submit', loginHandler)
+}
+
+export function initRegisterHandler() {
+  console.log('heeyo')
 }
 
 function loginHandler(event) {
