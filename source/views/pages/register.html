@@ -2,7 +2,7 @@
 {% block  content %}
 <div class="o-container">
   <h1 class="form__heading">{{ title }}</h1>
-  <form class="c-form" action="/register" method="POST" js-hook-module-register>
+  <form class="c-form" action="/register" method="POST" js-hook-module-form-validation>
     {% if errors.default %}
     <span class="form__error">
       {{ errors.default }}

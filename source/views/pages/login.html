@@ -3,15 +3,17 @@
 <div class="o-container">
   <h1 class="form__heading">{{ title }}</h1>
   {% if errors.isVerified %}
-  <span class="form__error">
-    {{ errors.isVerified.message }}
+  <section class="form__resend-verify-container">
+    <span class="form__error">
+      {{ errors.isVerified.message }}
+    </span>
     <form action="/resendVerificationEmail" method="POST">
       <input name="email" type="hidden" value="{{ errors.isVerified.email }}">
-      <input type="submit" value="Resend verification email">
+      <button class="c-button">Resend verification email</button>
     </form>
-  </span>
+  </section>
   {% endif %}
-  <form class="c-form" action="/login" method="POST" js-hook-module-login>
+  <form class="c-form" action="/login" method="POST" js-hook-module-form-validation>
     {% if errors.default %}
     <span class="form__error form__error--default">
       {{ errors.default }}

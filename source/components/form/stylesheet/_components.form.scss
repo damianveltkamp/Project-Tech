@@ -4,6 +4,14 @@
   border-radius: 5px;
 }
 
+.form__resend-verify-container {
+  margin-bottom: 20px;
+
+  & .form__error {
+    margin-bottom: 10px;
+  }
+}
+
 .form__fieldset {
   margin: 0;
   padding: 0;
