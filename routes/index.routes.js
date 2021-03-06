@@ -1,7 +1,7 @@
 import express from 'express'
-import * as base from '../controllers/default.controller'
-import * as account from '../controllers/account.controller'
-import userController from '../controllers/database/users.controller'
+import * as base from '@controllers/default.controller'
+import * as account from '@controllers/account.controller'
+import userController from '@controllers/database/users.controller'
 
 const router = express.Router()
 
