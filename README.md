@@ -44,29 +44,29 @@ Email address from which emails will be send with nodemailer (example use, verif
 #### EMAIL_PASS
 Password of the email that you want to use to send emails from with nodemailer
 
-### CAPTCHA_SITE_KEY
+#### CAPTCHA_SITE_KEY
 Google recaptcha site key for version 2
 
 [Information on how to setup google recaptcha can be found here](https://www.google.com/recaptcha/about/)
 
-### CAPTCHA_SECRET
+#### CAPTCHA_SECRET
 Google recaptcha secret key
 
 [Information on how to setup google recaptcha can be found here](https://www.google.com/recaptcha/about/)
 
-### SESSION_SECRET
+#### SESSION_SECRET
 Generated string to set to the session, this string can be anything but highly recommended to generate a random string with [node crypto](https://nodejs.org/api/crypto.html)
 
-### SESSION_NAME
+#### SESSION_NAME
 The name of the session cookie
 
-### REDIS_USER
+#### REDIS_USER
 The username that will be used for the redis server, this can be anything and this has no setup required.
 
-### REDIS_PASS
+#### REDIS_PASS
 The password that will be asked for when connecting to the redis-cli
 
-### REDIS_HOST
+#### REDIS_HOST
 The host address where you host the redis server, for local development this is localhost
 
 
