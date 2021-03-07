@@ -18,6 +18,7 @@ function loginHandler(event) {
 
         if(valid === false) {
           appendError(node, 'Provided email is not a valid email adress')
+          errors = true
         } else {
           removeError(node)
         }
