@@ -17,8 +17,6 @@ Repository for the Project Tech course
 ## Installing
 Important to execute these top to bottom!
 
-------
-
 ### Clone this repository into your local project folder
 ```
 git clone https://github.com/damian1997/Project-Tech.git
