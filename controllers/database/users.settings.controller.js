@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
-import userSettingsModel from '../../models/user.settings.model'
-import userModel from '../../models/user.model'
+import userSettingsModel from '@models/user.settings.model'
+import userModel from '@models/user.model'
 
 
 export default {

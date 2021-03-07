@@ -1,0 +1,15 @@
+// Default button variant styling
+$button-bg-color: $color-grey-light;
+$button-text-color: $color-black;
+
+@mixin button {
+  @include button--template;
+  background: $button-bg-color;
+  color: $button-text-color;
+  padding: 10px 20px;
+  transition: 250ms ease-in-out background;
+
+  @include hover-focus {
+    background: darken($button-bg-color, 20%);
+  }
+}

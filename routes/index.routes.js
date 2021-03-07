@@ -1,8 +1,7 @@
 import express from 'express'
-import bodyParser from 'body-parser'
-import * as base from '../controllers/default.controller'
-import * as account from '../controllers/account.controller'
-import userController from '../controllers/database/users.controller'
+import * as base from '@controllers/default.controller'
+import * as account from '@controllers/account.controller'
+import userController from '@controllers/database/users.controller'
 
 const router = express.Router()
 
@@ -36,5 +35,7 @@ router.post('/onboarding', account.postOnboardingFlow, base.home)
 router.get('/user-settings', account.userSettings)
 router.post('/user-settings', account.updateUserSettings, account.userSettings)
 router.get('*', base.notFound)
+router.get('/like', base.like)
+router.post('/like', base.likepost)
 
 export default router

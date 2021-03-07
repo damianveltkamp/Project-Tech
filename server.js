@@ -19,7 +19,7 @@ const port = process.env.PORT || 3000,
   urlEncodedParser = express.urlencoded({ extended: true }),
   dbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`
 
-mongoose.connect(dbUrl, { useUnifiedTopology: true, useFindAndModify: false })
+mongoose.connect(dbUrl, { useUnifiedTopology: true, useFindAndModify: false, useNewUrlParser: true })
 
 nunjucks.configure(['source/views', ...getComponentPaths()], {
   autoescape: true,

@@ -1,0 +1,14 @@
+.c-header {
+  padding: 20px 0;
+  background: $color-white;
+}
+
+.header__nav-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.header__nav-list-item {
+  display: inline-flex;
+}

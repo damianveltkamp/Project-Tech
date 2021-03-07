@@ -1,0 +1,16 @@
+@mixin button--template {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  border: 0;
+  background: none;
+
+}
+
+button {
+  @include button--template;
+}

@@ -37,5 +37,12 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin()
-  ]
+  ],
+  resolve: {
+    alias: {
+      '@components': path.resolve(__dirname, 'source/components'),
+      '@sass': path.resolve(__dirname, 'source/sass'),
+      '@javascript': path.resolve(__dirname, 'source/javascript'),
+    }
+  }
 }
