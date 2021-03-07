@@ -5,13 +5,19 @@ Repository for the Project Tech course
 * [Installing](#installing)
 * [License](#license)
 
+------
+
 ## Prerequisites
 * [NodeJS](https://nodejs.org/en/)
 * [MongoDB](https://www.mongodb.com/)
 * [Redis](https://redis.io/download)
 
+------
+
 ## Installing
 Important to execute these top to bottom!
+
+------
 
 ### Clone this repository into your local project folder
 ```
@@ -75,6 +81,8 @@ redis-server redis.conf
 ```
 npm run dev
 ```
+
+------
 
 ## License
 Find the license for the repository here
