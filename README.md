@@ -2,6 +2,7 @@
 Repository for the Project Tech course
 
 ## Table of contents
+* [Prerequisites](#prerequisites)
 * [Installing](#installing)
 * [License](#license)
 
