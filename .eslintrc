@@ -6,6 +6,5 @@
     "browser": true
   },
   "rules": {
-    no-console: ["error"]
   }
 }
