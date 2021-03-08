@@ -1,53 +1,55 @@
 function initFormValidation() {
-  document.querySelector('[js-hook-module-form-validation]').addEventListener('submit', loginHandler)
+  document
+    .querySelector('[js-hook-module-form-validation]')
+    .addEventListener('submit', loginHandler);
 }
 
 function loginHandler(event) {
-  event.preventDefault()
+  event.preventDefault();
 
-  let errors = false
+  let errors = false;
 
-  const validateNodes = document.querySelectorAll('[js-hook-validate]')
+  const validateNodes = document.querySelectorAll('[js-hook-validate]');
 
-  validateNodes.forEach(node => {
-    console.log(node)
-    switch(node.name) {
-      case 'email' : {
-        const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        const valid = regex.test(node.value)
+  validateNodes.forEach((node) => {
+    console.log(node);
+    switch (node.name) {
+      case 'email': {
+        const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const valid = regex.test(node.value);
 
-        if(valid === false) {
-          appendError(node, 'Provided email is not a valid email adress')
-          errors = true
+        if (valid === false) {
+          appendError(node, 'Provided email is not a valid email adress');
+          errors = true;
         } else {
-          removeError(node)
+          removeError(node);
         }
 
         break;
       }
-      case 'password' : {
-        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
-        const valid = regex.test(node.value)
+      case 'password': {
+        const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        const valid = regex.test(node.value);
 
-        if(valid == false) {
-          appendError(node, 'Password does not match our patern criteria')
-          errors = true
+        if (valid == false) {
+          appendError(node, 'Password does not match our patern criteria');
+          errors = true;
         } else {
-          removeError(node)
+          removeError(node);
         }
 
         break;
       }
-      case 'repeatPassword' : {
-        const password = [...validateNodes].find(node => {
-          return node.name === 'password'
-        })
+      case 'repeatPassword': {
+        const password = [...validateNodes].find((node) => {
+          return node.name === 'password';
+        });
 
-        if(node.value !== password.value) {
-          appendError(node, 'Passwords are not the same')
-          errors = true
+        if (node.value !== password.value) {
+          appendError(node, 'Passwords are not the same');
+          errors = true;
         } else {
-          removeError(node)
+          removeError(node);
         }
 
         break;
@@ -56,42 +58,44 @@ function loginHandler(event) {
         break;
       }
     }
-  })
+  });
 
-  errors === false && event.target.submit()
+  errors === false && event.target.submit();
 }
 
 function appendError(inputNode, errorMessage) {
-  const errorNodeExists = getErrorContainer(inputNode)
+  const errorNodeExists = getErrorContainer(inputNode);
 
-  if(errorNodeExists !== null) {
-    errorNodeExists.innerHTML = errorMessage
-    return
+  if (errorNodeExists !== null) {
+    errorNodeExists.innerHTML = errorMessage;
+    return;
   }
 
-  const errorNode = createErrorNode(errorMessage)
-  inputNode.parentNode.insertBefore(errorNode, inputNode)
+  const errorNode = createErrorNode(errorMessage);
+  inputNode.parentNode.insertBefore(errorNode, inputNode);
 }
 
 function getErrorContainer(inputNode) {
-  const previousSibling = inputNode.previousElementSibling
+  const previousSibling = inputNode.previousElementSibling;
 
-  return previousSibling.classList.contains('form__error') === true ? previousSibling : null
+  return previousSibling.classList.contains('form__error') === true
+    ? previousSibling
+    : null;
 }
 
 function createErrorNode(errorMessage) {
-  const errorNode = document.createElement('span')
-  const textNode = document.createTextNode(errorMessage)
-  errorNode.classList.add('form__error')
+  const errorNode = document.createElement('span');
+  const textNode = document.createTextNode(errorMessage);
+  errorNode.classList.add('form__error');
 
-  errorNode.appendChild(textNode)
-  return errorNode
+  errorNode.appendChild(textNode);
+  return errorNode;
 }
 
 function removeError(inputNode) {
-  const errorNodeExists = getErrorContainer(inputNode)
+  const errorNodeExists = getErrorContainer(inputNode);
 
-  errorNodeExists !== null && errorNodeExists.remove()
+  errorNodeExists !== null && errorNodeExists.remove();
 }
 
-export default initFormValidation
+export default initFormValidation;
