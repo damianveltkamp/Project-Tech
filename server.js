@@ -51,7 +51,7 @@ app
   .set('view engine', 'html')
   .set('redisClient', redisClient)
   .use('/', router)
-  .listen(port, () => console.log(`Using port: ${port}`));
+  .listen(port, () => console.log(`Using port: ${port}`))
 
 function getComponentPaths() {
   const componentsPath = 'source/components';
@@ -68,3 +68,5 @@ function getCssBundleName() {
   const cssBundle = fs.readdirSync('static/build/css/');
   return cssBundle[0];
 }
+
+console.log('heey');
