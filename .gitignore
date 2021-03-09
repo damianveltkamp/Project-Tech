@@ -3,3 +3,4 @@ node_modules
 dump.rdb
 static/build
 redis.conf
+index.compiled.js
