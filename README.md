@@ -1,5 +1,6 @@
 # Project-Tech
 Repository for the Project Tech course
+[DEMO](https://project-tech-sg4wv.ondigitalocean.app/)
 
 ## Table of contents
 * [Prerequisites](#prerequisites)
