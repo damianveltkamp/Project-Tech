@@ -12,14 +12,19 @@ import connectRedis from 'connect-redis';
 dotenv.config();
 
 const port = process.env.PORT || 3000,
+  environtment = process.env.ENVIRONMETN || 'development',
   redisPort = process.env.REDIS_PORT || 6379,
-  redisClient = redis.createClient(
-    `rediss://${process.env.REDIS_USER}:@${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${redisPort}`,
-  ),
+  redisString =
+    environtment == 'development'
+      ? `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${redisPort}`
+      : `rediss://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${redisPort}`,
+  redisClient = redis.createClient(redisString),
   redisStore = connectRedis(session),
   app = express(),
   urlEncodedParser = express.urlencoded({ extended: true }),
   dbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
+
+console.log(redisString);
 
 mongoose.connect(dbUrl, {
   useUnifiedTopology: true,
