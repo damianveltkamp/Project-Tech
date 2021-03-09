@@ -14,7 +14,7 @@ dotenv.config();
 const port = process.env.PORT || 3000,
   redisPort = process.env.REDIS_PORT || 6379,
   redisClient = redis.createClient(
-    `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${redisPort}`,
+    `rediss://${process.env.REDIS_USER}:@${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${redisPort}`,
   ),
   redisStore = connectRedis(session),
   app = express(),
