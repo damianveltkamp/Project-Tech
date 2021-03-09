@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "deploy:assets": "webpack",
-    "deploy:server": "babel server.js --out-file index-compiled.js",
     "dev": "run-p watch:server watch:build browser-sync",
     "watch:build": "webpack --watch",
     "watch:server": "nodemon -e html,js --exec babel-node ./server.js",
