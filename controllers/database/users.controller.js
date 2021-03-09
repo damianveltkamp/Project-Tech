@@ -1,4 +1,4 @@
-import userModel from '@models/user.model'
+import userModel from '../../models/user.model'
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 
