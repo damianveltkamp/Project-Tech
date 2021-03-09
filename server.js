@@ -24,8 +24,6 @@ const port = process.env.PORT || 3000,
   urlEncodedParser = express.urlencoded({ extended: true }),
   dbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
 
-console.log(redisString);
-
 mongoose.connect(dbUrl, {
   useUnifiedTopology: true,
   useFindAndModify: false,
