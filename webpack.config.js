@@ -4,22 +4,18 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   mode: 'production',
-  entry: [
-    __dirname + '/source/main.js',
-    __dirname + '/source/main.scss'
-  ],
+  entry: [__dirname + '/source/main.js', __dirname + '/source/main.scss'],
   output: {
     path: path.resolve(__dirname, 'static/build'),
     filename: 'js/main.min.js',
   },
-  watch: true,
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
+          loader: 'babel-loader',
         },
       },
       {
@@ -28,21 +24,19 @@ module.exports = {
         use: [
           {
             loader: 'file-loader',
-            options: { outputPath: 'css/', name: '[name].min.css'}
+            options: { outputPath: 'css/', name: '[name].min.css' },
           },
-          'sass-loader'
-        ]
-      }
-    ]
+          'sass-loader',
+        ],
+      },
+    ],
   },
-  plugins: [
-    new CleanWebpackPlugin()
-  ],
+  plugins: [new CleanWebpackPlugin()],
   resolve: {
     alias: {
       '@components': path.resolve(__dirname, 'source/components'),
       '@sass': path.resolve(__dirname, 'source/sass'),
       '@javascript': path.resolve(__dirname, 'source/javascript'),
-    }
-  }
-}
+    },
+  },
+};

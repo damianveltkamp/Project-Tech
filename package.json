@@ -4,9 +4,10 @@
   "description": "Repository for the Project Tech course",
   "main": "index.js",
   "scripts": {
-    "build:server": "babel index.js - out-file index-compiled.js",
+    "deploy:assets": "webpack",
+    "deploy:server": "babel server.js --out-file index-compiled.js",
     "dev": "run-p watch:server watch:build browser-sync",
-    "watch:build": "webpack",
+    "watch:build": "webpack --watch",
     "watch:server": "nodemon -e html,js --exec babel-node ./server.js",
     "browser-sync": "browser-sync start --proxy 'http://localhost:3000' --port '3001' --files 'static/build' --no-notify --reload-delay=500"
   },
